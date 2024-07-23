@@ -1,0 +1,85 @@
+[gd_scene load_steps=13 format=3 uid="uid://bwim36td55efa"]
+
+[ext_resource type="Shader" path="res://water.gdshader" id="1_xp3gf"]
+[ext_resource type="Script" path="res://water.gd" id="2_1fwv1"]
+[ext_resource type="Script" path="res://boat.gd" id="2_k6dtq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h7c2b"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_6efwx"]
+sky_material = SubResource("ProceduralSkyMaterial_h7c2b")
+
+[sub_resource type="Environment" id="Environment_20gbc"]
+background_mode = 2
+sky = SubResource("Sky_6efwx")
+tonemap_mode = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1jobl"]
+noise_type = 0
+frequency = 0.0012
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fiehm"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_1jobl")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hcee8"]
+render_priority = 0
+shader = ExtResource("1_xp3gf")
+shader_parameter/water_color = Color(0, 0.236833, 0.29, 0.54902)
+shader_parameter/wave_speed = 0.095
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 1.5
+shader_parameter/wave_time = null
+shader_parameter/wave = SubResource("NoiseTexture2D_fiehm")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_neyh8"]
+material = SubResource("ShaderMaterial_hcee8")
+size = Vector2(500, 500)
+subdivide_width = 500
+subdivide_depth = 500
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_poe6m"]
+size = Vector3(3, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r4mlb"]
+size = Vector3(3, 1, 1)
+
+[node name="Game" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_20gbc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.01404, 0, 0, 0, 1.01404, 0, 0, 0, 1.01404, 0, 0, 0)
+mesh = SubResource("PlaneMesh_neyh8")
+script = ExtResource("2_1fwv1")
+
+[node name="Boat" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+angular_damp = 50.0
+script = ExtResource("2_k6dtq")
+float_force = 2.5
+water_angular_drag = 0.1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boat"]
+shape = SubResource("BoxShape3D_poe6m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Boat"]
+mesh = SubResource("BoxMesh_r4mlb")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+remote_path = NodePath("Camera3D")
+update_rotation = false
+update_scale = false
+
+[node name="Camera3D" type="Camera3D" parent="Boat/RemoteTransform3D"]
+transform = Transform3D(-4.37114e-08, 0.5, -0.866025, 0, 0.866025, 0.5, 1, 2.18557e-08, -3.78552e-08, -5, 7, 0)

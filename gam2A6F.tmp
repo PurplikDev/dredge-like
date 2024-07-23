@@ -1,0 +1,116 @@
+[gd_scene load_steps=11 format=3 uid="uid://bwim36td55efa"]
+
+[ext_resource type="PackedScene" uid="uid://cmytsvogeg5tp" path="res://floater.tscn" id="1_kq4mu"]
+[ext_resource type="Script" path="res://boat.gd" id="2_k6dtq"]
+[ext_resource type="PackedScene" uid="uid://d1i1vrucn64ph" path="res://boat.glb" id="4_76np2"]
+[ext_resource type="Script" path="res://floater_averager.gd" id="4_sik3w"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h7c2b"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_6efwx"]
+sky_material = SubResource("ProceduralSkyMaterial_h7c2b")
+
+[sub_resource type="Environment" id="Environment_20gbc"]
+background_mode = 2
+sky = SubResource("Sky_6efwx")
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_poe6m"]
+size = Vector3(3, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fswcm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4r8qa"]
+size = Vector3(4, 0.5, 2)
+
+[node name="Game" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_20gbc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Boat" type="RigidBody3D" parent="." node_paths=PackedStringArray("camera_anchor", "camera_3d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+collision_layer = 2
+angular_damp = 50.0
+script = ExtResource("2_k6dtq")
+float_force = 5.0
+camera_anchor = NodePath("anchor_x/anchor_y/MeshInstance3D/boat/RemoteTransform3D/CameraAnchor")
+camera_3d = NodePath("anchor_x/anchor_y/MeshInstance3D/boat/RemoteTransform3D/CameraAnchor/CameraAnchorZ/Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boat"]
+shape = SubResource("BoxShape3D_poe6m")
+
+[node name="ForceSpot" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="Floaters" type="Node3D" parent="Boat"]
+
+[node name="FloaterFrontRight" parent="Boat/Floaters" instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0, -1.5)
+
+[node name="FloaterBackRight" parent="Boat/Floaters" instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0, -1.5)
+
+[node name="FloaterFrontLeft" parent="Boat/Floaters" instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0, 1.6)
+
+[node name="FloaterBackLeft" parent="Boat/Floaters" instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0, 1.6)
+
+[node name="FloaterAverager" type="Node" parent="Boat" node_paths=PackedStringArray("floater_a", "floater_b", "floater_c", "floater_d", "object_to_rotate", "x_rotation_anchor", "y_rotation_anchor", "ab", "cd", "ac", "bd")]
+script = ExtResource("4_sik3w")
+floater_a = NodePath("../Floaters/FloaterFrontRight")
+floater_b = NodePath("../Floaters/FloaterFrontLeft")
+floater_c = NodePath("../Floaters/FloaterBackRight")
+floater_d = NodePath("../Floaters/FloaterBackLeft")
+object_to_rotate = NodePath("../anchor_x/anchor_y/MeshInstance3D")
+x_rotation_anchor = NodePath("../anchor_x")
+y_rotation_anchor = NodePath("../anchor_x/anchor_y")
+ab = NodePath("../ab")
+cd = NodePath("../cd")
+ac = NodePath("../ac")
+bd = NodePath("../bd")
+
+[node name="ab" type="MeshInstance3D" parent="Boat"]
+mesh = SubResource("SphereMesh_fswcm")
+
+[node name="cd" type="MeshInstance3D" parent="Boat"]
+mesh = SubResource("SphereMesh_fswcm")
+
+[node name="ac" type="MeshInstance3D" parent="Boat"]
+mesh = SubResource("SphereMesh_fswcm")
+
+[node name="bd" type="MeshInstance3D" parent="Boat"]
+mesh = SubResource("SphereMesh_fswcm")
+
+[node name="anchor_x" type="Node3D" parent="Boat"]
+
+[node name="anchor_y" type="Node3D" parent="Boat/anchor_x"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Boat/anchor_x/anchor_y"]
+mesh = SubResource("BoxMesh_4r8qa")
+skeleton = NodePath("../../../FloaterAverager")
+
+[node name="boat" parent="Boat/anchor_x/anchor_y/MeshInstance3D" instance=ExtResource("4_76np2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Boat/anchor_x/anchor_y/MeshInstance3D/boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 1.65, 0)
+remote_path = NodePath("CameraAnchor/CameraAnchorZ/Camera3D")
+update_scale = false
+
+[node name="CameraAnchor" type="Marker3D" parent="Boat/anchor_x/anchor_y/MeshInstance3D/boat/RemoteTransform3D"]
+
+[node name="CameraAnchorZ" type="Node3D" parent="Boat/anchor_x/anchor_y/MeshInstance3D/boat/RemoteTransform3D/CameraAnchor"]
+
+[node name="Camera3D" type="Camera3D" parent="Boat/anchor_x/anchor_y/MeshInstance3D/boat/RemoteTransform3D/CameraAnchor/CameraAnchorZ"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10, 0, 0)
+doppler_tracking = 2
+near = 0.001
+far = 500.0

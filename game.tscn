@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://bwim36td55efa"]
+
+[ext_resource type="PackedScene" uid="uid://cgif5efhnkm2x" path="res://boat.tscn" id="1_gvsgb"]
+[ext_resource type="PackedScene" uid="uid://cmytsvogeg5tp" path="res://floater.tscn" id="1_kq4mu"]
+[ext_resource type="PackedScene" uid="uid://rdpmgjciv0of" path="res://texting.tscn" id="2_622tv"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h7c2b"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_6efwx"]
+sky_material = SubResource("ProceduralSkyMaterial_h7c2b")
+
+[sub_resource type="Environment" id="Environment_20gbc"]
+background_mode = 2
+sky = SubResource("Sky_6efwx")
+tonemap_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_nob8x"]
+size = Vector3(5, 5, 5)
+
+[node name="Game" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_20gbc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_nob8x")
+
+[node name="CanvasLayer" parent="." instance=ExtResource("2_622tv")]
+
+[node name="FloaterFrontRight" parent="." instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="FloaterFrontRight2" parent="." instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="FloaterFrontRight3" parent="." instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
+
+[node name="FloaterFrontRight4" parent="." instance=ExtResource("1_kq4mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="Boat" parent="." instance=ExtResource("1_gvsgb")]

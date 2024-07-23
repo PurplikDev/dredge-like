@@ -1,0 +1,71 @@
+[gd_scene load_steps=14 format=3 uid="uid://i1qgi5codg5s"]
+
+[ext_resource type="Script" path="res://water_manager.gd" id="1_s4cww"]
+[ext_resource type="Shader" path="res://water.gdshader" id="2_jj15t"]
+[ext_resource type="Shader" uid="uid://caogfrihhr42o" path="res://test_water.tres" id="3_gjake"]
+[ext_resource type="Texture2D" uid="uid://bs4wdgqqpor4j" path="res://wave_noise_1.tres" id="4_qrlfi"]
+[ext_resource type="Texture2D" uid="uid://bsy2rvte6xv0s" path="res://wave_noise_2.tres" id="5_vtbvp"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e6wh7"]
+noise_type = 2
+frequency = 0.05
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4ves7"]
+seamless = true
+seamless_blend_skirt = 0.409
+noise = SubResource("FastNoiseLite_e6wh7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s080u"]
+render_priority = 0
+shader = ExtResource("2_jj15t")
+shader_parameter/water_color = Color(0, 0.289833, 0.37, 0.588235)
+shader_parameter/foam_color = null
+shader_parameter/wave_time = 0.0
+shader_parameter/wave_scale = 1.0
+shader_parameter/wave_speed = 0.5
+shader_parameter/wave_offset = Vector3(0, 0, 0)
+shader_parameter/foam_noise = SubResource("NoiseTexture2D_4ves7")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ck3qi"]
+material = SubResource("ShaderMaterial_s080u")
+size = Vector2(256, 256)
+subdivide_width = 500
+subdivide_depth = 500
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6lqw5"]
+noise_type = 2
+frequency = 0.25
+fractal_type = 0
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1gafv"]
+noise = SubResource("FastNoiseLite_6lqw5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7qfo"]
+render_priority = 0
+shader = ExtResource("3_gjake")
+shader_parameter/wave_color = Color(0, 0.391667, 0.5, 0.588235)
+shader_parameter/noise = ExtResource("4_qrlfi")
+shader_parameter/wave_noise_2 = ExtResource("5_vtbvp")
+shader_parameter/foam_noise = SubResource("NoiseTexture2D_1gafv")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3scbp"]
+material = SubResource("ShaderMaterial_a7qfo")
+size = Vector2(256, 256)
+subdivide_width = 500
+subdivide_depth = 500
+
+[node name="WaterManager" type="Node" node_paths=PackedStringArray("water_mesh")]
+script = ExtResource("1_s4cww")
+wave_noise_1 = ExtResource("4_qrlfi")
+wave_noise_2 = ExtResource("5_vtbvp")
+water_mesh = NodePath("TestingWater")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("PlaneMesh_ck3qi")
+
+[node name="TestingWater" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_3scbp")
+skeleton = NodePath("../Water")
