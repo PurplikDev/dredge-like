@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://g52k1plsfgwy"]
+
+[ext_resource type="Shader" uid="uid://dleynuqsmn27u" path="res://water.tres" id="1_67itx"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nt3bv"]
+frequency = 0.0859
+fractal_type = 2
+cellular_distance_function = 1
+cellular_jitter = 0.75
+cellular_return_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eu4jk"]
+noise = SubResource("FastNoiseLite_nt3bv")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3jrv2"]
+noise_type = 2
+frequency = 0.0203
+fractal_type = 0
+cellular_distance_function = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6csln"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_3jrv2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tjny1"]
+render_priority = 0
+shader = ExtResource("1_67itx")
+shader_parameter/deep_water_color = Color(0, 0.099, 0.18, 1)
+shader_parameter/water_color = Color(0, 0.305882, 0.360784, 0.894118)
+shader_parameter/wave_noise_1 = SubResource("NoiseTexture2D_6csln")
+shader_parameter/ripple_noise = SubResource("NoiseTexture2D_eu4jk")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_01qjk"]
+material = SubResource("ShaderMaterial_tjny1")
+size = Vector2(64, 64)
+subdivide_width = 64
+subdivide_depth = 64
+
+[sub_resource type="BoxMesh" id="BoxMesh_menmf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sie7j"]
+albedo_color = Color(0.46, 0.43608, 0.4002, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wnkqv"]
+material = SubResource("StandardMaterial3D_sie7j")
+size = Vector2(32, 32)
+
+[node name="Main" type="Node"]
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_01qjk")
+
+[node name="Boat" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.698353, -0.715754, 0, 0.715754, 0.698353, 0, 0, 0, 1, 0, -0.255815, 0)
+mesh = SubResource("BoxMesh_menmf")
+skeleton = NodePath("../Boat")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.852373, -0.482326, 0.202043, 0.30394, 0.771348, 0.559144, -0.425536, -0.41519, 0.804075, -2.66743, -0.255815, 0)
+mesh = SubResource("BoxMesh_menmf")
+skeleton = NodePath("../Boat")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.922104, -0.0906596, -0.376172, 0.30394, 0.771348, 0.559144, 0.239468, -0.629923, 0.738818, -1.57391, -2.33784, -1.68647)
+mesh = SubResource("BoxMesh_menmf")
+skeleton = NodePath("../Boat")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -3, 0)
+mesh = SubResource("PlaneMesh_wnkqv")
+skeleton = NodePath("../Boat")
