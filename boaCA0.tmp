@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://dypva85odwfgp"]
+
+[ext_resource type="PackedScene" uid="uid://swhtqh2yyjrp" path="res://boat.glb" id="1_il42s"]
+[ext_resource type="Script" path="res://boat.gd" id="1_sdyon"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5gg0a"]
+friction = 0.25
+rough = true
+bounce = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6lb2q"]
+radius = 2.0
+height = 6.0
+
+[node name="Boat" type="RigidBody3D"]
+axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+physics_material_override = SubResource("PhysicsMaterial_5gg0a")
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("1_sdyon")
+
+[node name="boat" parent="." instance=ExtResource("1_il42s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, 0)
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 3, 0)
+remote_path = NodePath("../../CameraAnchor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_6lb2q")
+
+[node name="CameraAnchor" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 3, 0)
+
+[node name="H" type="Node3D" parent="CameraAnchor"]
+
+[node name="V" type="Node3D" parent="CameraAnchor/H"]
+
+[node name="CameraArm" type="SpringArm3D" parent="CameraAnchor/H/V"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 2.5, 0)
+spring_length = 15.0
+
+[node name="Camera" type="Camera3D" parent="CameraAnchor/H/V/CameraArm"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0)
+current = true

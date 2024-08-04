@@ -1,74 +1,110 @@
-[gd_scene load_steps=11 format=3 uid="uid://g52k1plsfgwy"]
+[gd_scene load_steps=14 format=3 uid="uid://g52k1plsfgwy"]
 
-[ext_resource type="Shader" uid="uid://dleynuqsmn27u" path="res://water.tres" id="1_67itx"]
+[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://ripple_noise.tres" id="3_f7gfa"]
+[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://wave_noise_1.tres" id="3_r5roh"]
+[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://wave_noise_2.tres" id="4_l42ev"]
+[ext_resource type="PackedScene" uid="uid://cvtcs31mbx3o" path="res://boat.tscn" id="5_ukiw7"]
+[ext_resource type="PackedScene" path="res://floater.tscn" id="6_cd6xr"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_nt3bv"]
-frequency = 0.0859
-fractal_type = 2
-cellular_distance_function = 1
-cellular_jitter = 0.75
-cellular_return_type = 3
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4ol2b"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eu4jk"]
-noise = SubResource("FastNoiseLite_nt3bv")
+[sub_resource type="Sky" id="Sky_ngwu3"]
+sky_material = SubResource("ProceduralSkyMaterial_4ol2b")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3jrv2"]
-noise_type = 2
-frequency = 0.0203
-fractal_type = 0
-cellular_distance_function = 1
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6csln"]
-seamless = true
-seamless_blend_skirt = 1.0
-noise = SubResource("FastNoiseLite_3jrv2")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tjny1"]
-render_priority = 0
-shader = ExtResource("1_67itx")
-shader_parameter/deep_water_color = Color(0, 0.099, 0.18, 1)
-shader_parameter/water_color = Color(0, 0.305882, 0.360784, 0.894118)
-shader_parameter/wave_noise_1 = SubResource("NoiseTexture2D_6csln")
-shader_parameter/ripple_noise = SubResource("NoiseTexture2D_eu4jk")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_01qjk"]
-material = SubResource("ShaderMaterial_tjny1")
-size = Vector2(64, 64)
-subdivide_width = 64
-subdivide_depth = 64
+[sub_resource type="Environment" id="Environment_boyqx"]
+background_mode = 2
+sky = SubResource("Sky_ngwu3")
+tonemap_mode = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_menmf"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sie7j"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wksup"]
 albedo_color = Color(0.46, 0.43608, 0.4002, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnkqv"]
-material = SubResource("StandardMaterial3D_sie7j")
+material = SubResource("StandardMaterial3D_wksup")
 size = Vector2(32, 32)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fe6lq"]
+friction = 0.0
+rough = true
+bounce = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crtge"]
+size = Vector3(32, 1, 33)
 
 [node name="Main" type="Node"]
 
-[node name="Water" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_01qjk")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_boyqx")
 
-[node name="Boat" type="Node3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.698353, -0.715754, 0, 0.715754, 0.698353, 0, 0, 0, 1, 0, -0.255815, 0)
+visible = false
 mesh = SubResource("BoxMesh_menmf")
-skeleton = NodePath("../Boat")
+skeleton = NodePath("")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.852373, -0.482326, 0.202043, 0.30394, 0.771348, 0.559144, -0.425536, -0.41519, 0.804075, -2.66743, -0.255815, 0)
+visible = false
 mesh = SubResource("BoxMesh_menmf")
-skeleton = NodePath("../Boat")
+skeleton = NodePath("")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.922104, -0.0906596, -0.376172, 0.30394, 0.771348, 0.559144, 0.239468, -0.629923, 0.738818, -1.57391, -2.33784, -1.68647)
+visible = false
 mesh = SubResource("BoxMesh_menmf")
-skeleton = NodePath("../Boat")
+skeleton = NodePath("")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -3, 0)
+transform = Transform3D(1, 0, 0, 0, 0.866026, -0.5, 0, 0.5, 0.866026, 0, -3, 0)
 mesh = SubResource("PlaneMesh_wnkqv")
-skeleton = NodePath("../Boat")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D4"]
+physics_material_override = SubResource("PhysicsMaterial_fe6lq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D4/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999997, 1.49012e-08, 0, -1.49012e-08, 0.999997, 0, 0, 0)
+shape = SubResource("BoxShape3D_crtge")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.430459, 0.560986, 0, 0.793353, 0.608761, -0.707107, -0.430459, 0.560986, 10, 15, 10)
+fov = 50.0
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 600, 8)
+fov = 50.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+offset_right = 256.0
+offset_bottom = 256.0
+texture = ExtResource("3_r5roh")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
+offset_top = 256.0
+offset_right = 256.0
+offset_bottom = 512.0
+texture = ExtResource("4_l42ev")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer"]
+offset_top = 512.0
+offset_right = 512.0
+offset_bottom = 1024.0
+texture = ExtResource("3_f7gfa")
+expand_mode = 1
+
+[node name="Floater" parent="." instance=ExtResource("6_cd6xr")]
+
+[node name="Boat" parent="." instance=ExtResource("5_ukiw7")]

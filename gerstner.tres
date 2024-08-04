@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://dfb6htiib7xye"]
+
+[ext_resource type="Shader" path="res://gerstner.gdshader" id="1_kbu58"]
+[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://ripple_noise.tres" id="2_qvvrh"]
+[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://wave_noise_1.tres" id="3_l2nfx"]
+[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://wave_noise_2.tres" id="4_v11c7"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_kbu58")
+shader_parameter/testdirection = Vector2(1, 0.5)
+shader_parameter/speeed = 0.5
+shader_parameter/steeepness = 0.5
+shader_parameter/aamplitude = 1.0
+shader_parameter/waavelength = 0.125
+shader_parameter/water_color = Color(0, 0.717647, 1, 0.494118)
+shader_parameter/deep_water_color = Color(0, 0, 0.552941, 1)
+shader_parameter/wave_noise_1 = ExtResource("3_l2nfx")
+shader_parameter/wave_noise_2 = ExtResource("4_v11c7")
+shader_parameter/ripple_noise = ExtResource("2_qvvrh")

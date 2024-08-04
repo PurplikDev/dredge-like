@@ -1,0 +1,86 @@
+[gd_scene load_steps=15 format=3 uid="uid://b1h44ffjeiuj8"]
+
+[ext_resource type="Script" path="res://wave_manager.gd" id="1_b6iqu"]
+[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://wave_noise_1.tres" id="2_4urw1"]
+[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://wave_noise_2.tres" id="3_36oe4"]
+[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://ripple_noise.tres" id="4_bu40x"]
+[ext_resource type="Shader" uid="uid://c5b5btaqri8d8" path="res://water_shader.tres" id="5_gkjx6"]
+[ext_resource type="Material" uid="uid://dfb6htiib7xye" path="res://gerstner.tres" id="5_phcr7"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3p3as"]
+material = ExtResource("5_phcr7")
+size = Vector2(512, 512)
+subdivide_width = 512
+subdivide_depth = 512
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_57q62"]
+render_priority = 0
+shader = ExtResource("5_gkjx6")
+shader_parameter/speed = 1.0
+shader_parameter/steepness = 0.5
+shader_parameter/amplitude = 0.5
+shader_parameter/wavelength = 0.25
+shader_parameter/direction = Vector2(1, 0.5)
+shader_parameter/time = null
+shader_parameter/water_color = Color(0, 0.375, 0.5, 0.588235)
+shader_parameter/deep_water_color = Color(0, 0.145833, 0.35, 0.784314)
+shader_parameter/wave_noise_1 = ExtResource("2_4urw1")
+shader_parameter/wave_noise_2 = ExtResource("3_36oe4")
+shader_parameter/ripple_noise = ExtResource("4_bu40x")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yq84t"]
+material = SubResource("ShaderMaterial_57q62")
+size = Vector2(512, 512)
+subdivide_width = 512
+subdivide_depth = 512
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ktsl"]
+albedo_color = Color(0.46, 0.43608, 0.4002, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2q4ty"]
+material = SubResource("StandardMaterial3D_0ktsl")
+size = Vector2(32, 32)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bwnci"]
+friction = 0.0
+rough = true
+bounce = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ncv8f"]
+size = Vector3(32, 1, 33)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ipxcg"]
+size = Vector3(25, 25, 25)
+
+[node name="WaveManager" type="Node" node_paths=PackedStringArray("water_mesh")]
+script = ExtResource("1_b6iqu")
+noise_1_direction = Vector3(1, 0.5, 0)
+noise_2_direction = Vector3(0.5, 0.75, 0)
+wave_speed = 2.5
+water_mesh = NodePath("Water2")
+wave_noise_1 = ExtResource("2_4urw1")
+wave_noise_2 = ExtResource("3_36oe4")
+ripple_noise = ExtResource("4_bu40x")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("PlaneMesh_3p3as")
+
+[node name="Water2" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_yq84t")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866026, -0.5, 0, 0.5, 0.866026, 0, -3, 0)
+mesh = SubResource("PlaneMesh_2q4ty")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D4"]
+physics_material_override = SubResource("PhysicsMaterial_bwnci")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D4/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999997, 1.49012e-08, 0, -1.49012e-08, 0.999997, 0, 0, 0)
+shape = SubResource("BoxShape3D_ncv8f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.883197, -0.415106, 0.218291, 0.464583, 0.710582, -0.528428, 0.0642398, 0.56812, 0.820435, -17, -4, 22)
+mesh = SubResource("BoxMesh_ipxcg")
