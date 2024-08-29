@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://by5fxbrw1co62"]
 
-[ext_resource type="Shader" path="res://water_mask.gdshader" id="1_xoh37"]
+[ext_resource type="Shader" path="res://resources/water_mask.gdshader" id="1_xoh37"]
 
 [resource]
 render_priority = 0

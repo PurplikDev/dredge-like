@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://cvtcs31mbx3o"]
 
-[ext_resource type="PackedScene" uid="uid://swhtqh2yyjrp" path="res://boat.glb" id="1_il42s"]
-[ext_resource type="Script" path="res://boat.gd" id="1_sdyon"]
-[ext_resource type="Script" path="res://floater_component.gd" id="3_0fym7"]
-[ext_resource type="PackedScene" uid="uid://cj13jlcdlhf2w" path="res://boat_mask.glb" id="3_8loym"]
-[ext_resource type="PackedScene" path="res://floater.tscn" id="3_fmi8j"]
+[ext_resource type="PackedScene" uid="uid://swhtqh2yyjrp" path="res://models/boat.glb" id="1_il42s"]
+[ext_resource type="Script" path="res://scripts/boat.gd" id="1_sdyon"]
+[ext_resource type="Script" path="res://scripts/floater_component.gd" id="3_0fym7"]
+[ext_resource type="PackedScene" uid="uid://cj13jlcdlhf2w" path="res://models/boat_mask.glb" id="3_8loym"]
+[ext_resource type="PackedScene" uid="uid://cbdxqqf1ak0ut" path="res://scenes/floater.tscn" id="3_fmi8j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5gg0a"]
 friction = 0.25
@@ -63,21 +63,25 @@ floater_d = NodePath("Floater4")
 collision_shape = NodePath("../CollisionShape3D")
 object_to_rotate = NodePath("../boat")
 
-[node name="Floater" parent="Floaters" instance=ExtResource("3_fmi8j")]
+[node name="Floater" parent="Floaters" node_paths=PackedStringArray("rigid_body") instance=ExtResource("3_fmi8j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -1.5)
 visible = false
+rigid_body = NodePath("../..")
 
-[node name="Floater2" parent="Floaters" instance=ExtResource("3_fmi8j")]
+[node name="Floater2" parent="Floaters" node_paths=PackedStringArray("rigid_body") instance=ExtResource("3_fmi8j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 1.5)
 visible = false
+rigid_body = NodePath("../..")
 
-[node name="Floater3" parent="Floaters" instance=ExtResource("3_fmi8j")]
+[node name="Floater3" parent="Floaters" node_paths=PackedStringArray("rigid_body") instance=ExtResource("3_fmi8j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1.5)
 visible = false
+rigid_body = NodePath("../..")
 
-[node name="Floater4" parent="Floaters" instance=ExtResource("3_fmi8j")]
+[node name="Floater4" parent="Floaters" node_paths=PackedStringArray("rigid_body") instance=ExtResource("3_fmi8j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 1.5)
 visible = false
+rigid_body = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)

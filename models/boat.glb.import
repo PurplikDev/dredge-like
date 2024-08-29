@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://swhtqh2yyjrp"
-path="res://.godot/imported/boat.glb-fc65d11d2059a6d46422d026bdeec045.scn"
+path="res://.godot/imported/boat.glb-e000108dbf310d0ee41c82cadea972fe.scn"
 
 [deps]
 
-source_file="res://boat.glb"
-dest_files=["res://.godot/imported/boat.glb-fc65d11d2059a6d46422d026bdeec045.scn"]
+source_file="res://models/boat.glb"
+dest_files=["res://.godot/imported/boat.glb-e000108dbf310d0ee41c82cadea972fe.scn"]
 
 [params]
 
@@ -17,6 +17,7 @@ nodes/root_type=""
 nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
 meshes/ensure_tangents=true
 meshes/generate_lods=true
 meshes/create_shadow_meshes=true
@@ -28,6 +29,7 @@ animation/import=true
 animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
 import_script/path=""
 _subresources={}
 gltf/naming_version=1

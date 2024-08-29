@@ -1,10 +1,10 @@
 [gd_scene load_steps=14 format=3 uid="uid://g52k1plsfgwy"]
 
-[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://ripple_noise.tres" id="3_f7gfa"]
-[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://wave_noise_1.tres" id="3_r5roh"]
-[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://wave_noise_2.tres" id="4_l42ev"]
-[ext_resource type="PackedScene" uid="uid://cvtcs31mbx3o" path="res://boat.tscn" id="5_ukiw7"]
-[ext_resource type="PackedScene" path="res://floater.tscn" id="6_cd6xr"]
+[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://resources/wave_noise_1.tres" id="1_u8yqj"]
+[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://resources/wave_noise_2.tres" id="2_qf028"]
+[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://resources/ripple_noise.tres" id="3_s6ivy"]
+[ext_resource type="PackedScene" uid="uid://cbdxqqf1ak0ut" path="res://scenes/floater.tscn" id="4_347at"]
+[ext_resource type="PackedScene" uid="uid://cvtcs31mbx3o" path="res://scenes/boat.tscn" id="5_iumt0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4ol2b"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -88,23 +88,24 @@ visible = false
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
 offset_right = 256.0
 offset_bottom = 256.0
-texture = ExtResource("3_r5roh")
+texture = ExtResource("1_u8yqj")
 expand_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
 offset_top = 256.0
 offset_right = 256.0
 offset_bottom = 512.0
-texture = ExtResource("4_l42ev")
+texture = ExtResource("2_qf028")
 expand_mode = 1
 
 [node name="TextureRect3" type="TextureRect" parent="CanvasLayer"]
 offset_top = 512.0
 offset_right = 512.0
 offset_bottom = 1024.0
-texture = ExtResource("3_f7gfa")
+texture = ExtResource("3_s6ivy")
 expand_mode = 1
 
-[node name="Floater" parent="." instance=ExtResource("6_cd6xr")]
+[node name="Floater" parent="." instance=ExtResource("4_347at")]
+script = null
 
-[node name="Boat" parent="." instance=ExtResource("5_ukiw7")]
+[node name="Boat" parent="." instance=ExtResource("5_iumt0")]

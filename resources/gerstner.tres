@@ -1,9 +1,9 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://dfb6htiib7xye"]
 
-[ext_resource type="Shader" path="res://gerstner.gdshader" id="1_kbu58"]
-[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://ripple_noise.tres" id="2_qvvrh"]
-[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://wave_noise_1.tres" id="3_l2nfx"]
-[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://wave_noise_2.tres" id="4_v11c7"]
+[ext_resource type="Shader" path="res://resources/gerstner.gdshader" id="1_kbu58"]
+[ext_resource type="Texture2D" uid="uid://bofp8qwevfqu7" path="res://resources/ripple_noise.tres" id="2_qvvrh"]
+[ext_resource type="Texture2D" uid="uid://dwax1g52sfnmh" path="res://resources/wave_noise_1.tres" id="3_l2nfx"]
+[ext_resource type="Texture2D" uid="uid://3ryaoruj0bso" path="res://resources/wave_noise_2.tres" id="4_v11c7"]
 
 [resource]
 render_priority = 0
